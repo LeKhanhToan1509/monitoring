@@ -1,0 +1,10 @@
+openai
+fastapi
+requests
+uvicorn
+python-multipart
+pandas
+python-dotenv
+gunicorn 
+redis
+tiktoken 

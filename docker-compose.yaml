@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vsic2018_app
+    ports:
+      - "8000:8000"
+    env_file:                     
+      - .env
+    environment:
+      - REDIS_HOST=cache
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    depends_on:
+      - cache
+    networks:
+      - my-network
+
+  cache:
+    image: redis:6.2-alpine
+    container_name: vsic2018_cache
+    restart: always
+    ports:
+      - "6379:6379"
+    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    volumes: 
+      - cache:/data
+    networks:
+      - my-network
+
+networks:
+  my-network:
+  
+volumes:
+  cache:
