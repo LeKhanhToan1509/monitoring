@@ -52,13 +52,12 @@ The request body should be a JSON object with the following fields:
 ```
 
 ```cmd
-docker compose up -d
-```
-
 OPENAI_API_KEY=your_openai_api_key
 REDIS_HOST=localhost
 REDIS_PORT=6379
 REDIS_PASSWORD=your_redis_password
+```
+
 
 ```
 docker-compose up --build
