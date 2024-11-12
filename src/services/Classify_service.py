@@ -143,7 +143,6 @@ async def classify_request_logic(requestInput):
         except Exception as e:
             return ResponseHttp().getResponse(500, f"Error in VsicClassification: {str(e)}")
         
-        # Lưu kết quả vào cache với TTL là 10 phút (600 giây)
         try:
             cache.setex(cache_key, 600, json.dumps(result))
         except redis.ConnectionError as e:

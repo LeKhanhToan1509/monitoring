@@ -31,6 +31,34 @@ services:
     networks:
       - my-network
 
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - "/d/vsic/prometheus/prometheus.yaml:/etc/prometheus/prometheus.yaml"
+    ports:
+      - "9090:9090"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=pass@123
+      - GF_USERS_ALLOW_SIGN_UP=false
+    networks:
+      - my-network
+
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    depends_on:
+      - prometheus
+    ports:
+      - 3000:3000
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    env_file:
+      - ./grafana/config.monitoring
+    networks:
+      - my-network
+
 networks:
   my-network:
   
