@@ -6,7 +6,6 @@ from config import *
 from llms import GPT_4o_mini
 import os
 
-
 # Khởi tạo GPT model và Redis client
 gpt = GPT_4o_mini()
 cache = redis.StrictRedis(
@@ -46,14 +45,19 @@ async def classify_request_logic(requestInput):
         request_data = requestInput.dict()
         cache_key = generate_cache_key(request_data)
 
+        print("Cache key: ", cache_key)
 
         try:
             cached_response = cache.get(cache_key)
+            print("Cached response: ", cached_response)
             if cached_response:
                 return json.loads(cached_response)
         except redis.ConnectionError as e:
             print(f"Error retrieving from Redis cache: {e}")
             return ResponseHttp().getResponse(500, f"Error retrieving from cache: {str(e)}")
+        except redis.AuthenticationError as e:
+            print(f"Error authenticating to Redis cache: {e}")
+            return ResponseHttp().getResponse(500, f"Error authenticating to cache: {str(e)}")
         
         print("Request data: ", request_data)
         
@@ -145,6 +149,9 @@ async def classify_request_logic(requestInput):
         except redis.ConnectionError as e:
             print(f"Error saving to Redis cache: {e}")
             return ResponseHttp().getResponse(500, f"Error saving to cache: {str(e)}")
+        except redis.AuthenticationError as e:
+            print(f"Error authenticating to Redis cache: {e}")
+            return ResponseHttp().getResponse(500, f"Error authenticating to cache: {str(e)}")
         
         return ResponseHttp().getResponse(200, result)
 
