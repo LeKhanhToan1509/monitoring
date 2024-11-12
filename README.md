@@ -49,16 +49,19 @@ The request body should be a JSON object with the following fields:
   "scope_of_work": "Construction of a new bridge over the river",
   "other_details": "The bridge should be completed within 2 years"
 }
+```
 
 ```cmd
 docker compose up -d
+```
 
 OPENAI_API_KEY=your_openai_api_key
 REDIS_HOST=localhost
 REDIS_PORT=6379
 REDIS_PASSWORD=your_redis_password
 
-
+```
 docker-compose up --build
+```
 
 Access the API: The API will be available at http://localhost:8000/api/v1/classify/request.
