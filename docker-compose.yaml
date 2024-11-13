@@ -1,4 +1,3 @@
-version: '3.8'
 
 services:
   app:
@@ -6,14 +5,21 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: vsic2018_app
+    volumes:
+      - ./logs:/app/logs
     ports:
       - "8000:8000"
+    
+    restart: on-failure
+
+    healthcheck:
+      test: ["CMD", "./health_check.sh"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
     env_file:                     
       - .env
-    environment:
-      - REDIS_HOST=cache
-      - REDIS_PORT=6379
-      - REDIS_PASSWORD=eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
     depends_on:
       - cache
     networks:
@@ -32,17 +38,21 @@ services:
       - my-network
 
   prometheus:
-    image: prom/prometheus
+    image: prom/prometheus:latest
     container_name: prometheus
-    volumes:
-      - "/d/vsic/prometheus/prometheus.yaml:/etc/prometheus/prometheus.yaml"
     ports:
       - "9090:9090"
+    volumes:
+      - ./prometheus:/etc/prometheus
+      - ./prometheus-data:/prometheus
+      - ./prometheus/prometheus.yml:/prometheus.yml
+    command:
+      - "--config.file=/prometheus.yml"
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=pass@123
       - GF_USERS_ALLOW_SIGN_UP=false
     networks:
-      - my-network
+      - my-network 
 
 
   grafana:
@@ -53,7 +63,7 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/provisioning:/app/grafana/provisioning
     env_file:
       - ./grafana/config.monitoring
     networks:

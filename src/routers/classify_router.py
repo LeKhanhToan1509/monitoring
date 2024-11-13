@@ -6,14 +6,12 @@ from controllers.classify_controller import classify_request_controller
 # Khởi tạo router
 classifyRouter = APIRouter()
 
-@classifyRouter.post("/request")
+@classifyRouter.post("/classify")
 async def classify_request(requestInput: TenderPayload):
     try:
-        response = await classify_request_controller(requestInput)  # Use the correct function
+        response = await classify_request_controller(requestInput) 
         return response
     except ValidationError as e:
-        # Sử dụng mã 422 từ ResponseCode khi có lỗi xác thực
         raise HTTPException(status_code=ResponseCode.UNPROCESSABLE_ENTITY.value, detail=str(e))
     except Exception as e:
-        # Sử dụng mã 500 từ ResponseCode cho lỗi server
         raise HTTPException(status_code=ResponseCode.INTERNAL_SERVER_ERROR.value, detail=f"Internal server error: {str(e)}")

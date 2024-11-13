@@ -41,10 +41,10 @@ class GunicornConfig:
     max_requests_jitter = 50  # Thêm ngẫu nhiên vào `max_requests` để tránh khởi tạo lại đồng thời các workers
 
     # Các biến môi trường (Environment Variables) bổ sung
-    raw_env = [
-        "APP_ENV=production",
-        "SECRET_KEY=your_secret_key_here"  # Đặt các biến môi trường tùy ý
-    ]
+    # raw_env = [
+    #     "APP_ENV=production",
+    #     "SECRET_KEY=your_secret_key_here"  # Đặt các biến môi trường tùy ý
+    # ]
 
     # Sử dụng SSL nếu cần
     # keyfile = "/path/to/ssl.key"

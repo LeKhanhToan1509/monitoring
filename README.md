@@ -17,7 +17,7 @@ This project is a classification service that uses OpenAI's GPT-4 model to class
 
 ### Classify Request
 
-- **URL**: `http://localhost:8000/api/v1/classify/request`
+- **URL**: `http://localhost:8000/api/v1/classify`
 - **Method**: `POST`
 - **Content-Type**: `application/json`
 

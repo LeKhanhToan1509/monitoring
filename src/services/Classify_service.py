@@ -6,7 +6,6 @@ from config import *
 from llms import GPT_4o_mini
 import os
 
-# Khởi tạo GPT model và Redis client
 gpt = GPT_4o_mini()
 cache = redis.StrictRedis(
     host=os.getenv("REDIS_HOST", "localhost"),
@@ -16,7 +15,6 @@ cache = redis.StrictRedis(
     decode_responses=True
 )
 
-# Check if the cache is running
 try:
     cache.set("test_key", "test_value")
     if cache.get("test_key") == "test_value":
